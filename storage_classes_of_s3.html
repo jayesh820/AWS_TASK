@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS S3 Storage Classes — Deep Dive & Best Practices</title>
+  <meta name="description" content="Comprehensive guide to Amazon S3 storage classes, use-cases, pricing patterns, lifecycle policies and example commands." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --card:#071226; --muted:#9aa4b2; --accent:#6ee7b7; --accent2:#7c3aed;
+      --glass: rgba(255,255,255,.03); --radius:12px; --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#07121b 0%, #041424 70%);color:#e6eef6}
+    a{color:var(--accent)}
+    .wrap{max-width:var(--maxw);margin:36px auto;padding:20px}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border-radius:14px;background:linear-gradient(90deg,#061223, #072033);box-shadow:0 14px 60px rgba(2,6,23,.7)}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:grid;place-items:center;font-weight:800;color:#021}
+    h1{margin:0;font-size:1.25rem}
+    .subtitle{color:var(--muted);font-size:.9rem}
+
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:20px;margin-top:20px}
+    @media(max-width:980px){.layout{grid-template-columns:1fr}}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);border:1px solid var(--glass)}
+    .hero h2{margin:0;font-size:1.5rem}
+    .meta{color:var(--muted);opacity:.9}
+
+    .toc{display:grid;gap:8px;margin-top:12px}
+    .toc a{display:block;padding:8px;border-radius:10px;background:rgba(255,255,255,.02);color:var(--muted);text-decoration:none}
+    .toc a:hover{background:rgba(255,255,255,.03);color:var(--accent)}
+
+    h3{margin-top:12px;color:#dfeff0}
+    p{color:#cfe6e9;line-height:1.6}
+    ul,ol{color:#cfe6e9}
+
+    pre{background:#021226;padding:12px;border-radius:10px;color:#dff6ef;overflow:auto;border:1px solid rgba(255,255,255,.03)}
+    code{font-family:monospace;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:6px}
+    .copy{float:right;background:transparent;border:none;color:var(--accent2);cursor:pointer;font-weight:700}
+
+    aside{position:sticky;top:28px}
+    .chip{display:inline-block;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.02);color:var(--muted);margin:6px 6px 0 0;font-weight:700}
+
+    .note{background:linear-gradient(90deg, rgba(124,58,237,0.06), rgba(110,231,183,0.03));padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.02);color:var(--muted)}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#34d399);color:#021;border:none;font-weight:700;cursor:pointer}
+    .secondary{background:transparent;border:1px solid rgba(0,0,0,.06);color:#cfe6e9}
+
+    footer{margin-top:20px;text-align:center;color:var(--muted)}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.02);color:var(--muted)}
+
+    .highlight{color:var(--accent2);font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">S3</div>
+        <div>
+          <h1>AWS S3 Storage Classes — Deep Dive</h1>
+          <div class="subtitle">Understand cost, latency, durability, and when to use each class</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="downloadAssets()">Download Examples</button>
+        <a class="btn secondary" href="#compare">Compare</a>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main>
+        <div class="card hero">
+          <div class="meta">Cloud Storage • Cost Optimization • Data Lifecycle</div>
+          <h2>Overview</h2>
+          <p>Amazon S3 provides a range of storage classes tailored for different access patterns and cost requirements. Choosing the right storage class reduces costs while meeting performance, durability and retrieval-time needs. This guide covers each S3 storage class, use-cases, pricing behaviour, lifecycle examples, and commands to work with them.</p>
+        </div>
+
+        <section id="classes" class="card">
+          <h3>S3 Storage Classes — Summary</h3>
+          <p>Below is a concise list. Detailed sections follow.</p>
+          <ul>
+            <li><span class="highlight">S3 Standard</span> — General purpose, frequent access, low latency.</li>
+            <li><span class="highlight">S3 Intelligent-Tiering</span> — Automatic cost optimization between frequent & infrequent tiers.</li>
+            <li><span class="highlight">S3 Standard-Infrequent Access (Standard-IA)</span> — For infrequently accessed data with rapid access when needed.</li>
+            <li><span class="highlight">S3 One Zone-Infrequent Access (One Zone-IA)</span> — Lower cost for infrequent access, stored in a single AZ.</li>
+            <li><span class="highlight">S3 Glacier Instant Retrieval</span> — Archive retrieval milliseconds for long-lived data.</li>
+            <li><span class="highlight">S3 Glacier Flexible Retrieval</span> — Archive storage with configurable retrieval times (minutes to hours).</li>
+            <li><span class="highlight">S3 Glacier Deep Archive</span> — Lowest-cost archive for long-term retention (hours retrieval).</li>
+          </ul>
+        </section>
+
+        <section id="standard" class="card">
+          <h3>S3 Standard</h3>
+          <p>Best for frequently accessed data — web content, dynamic content, big data analytics, and content distribution. Offers high throughput, low latency, and 11 9's (99.999999999%) durability across multiple AZs.</p>
+          <p><strong>When to use:</strong> Hot data, active workloads.</p>
+          <p><strong>Characteristics:</strong> Low latency, no retrieval fees, higher storage cost than infrequent classes.</p>
+        </section>
+
+        <section id="intelligent" class="card">
+          <h3>S3 Intelligent-Tiering</h3>
+          <p>Automatically moves objects between two access tiers: frequent and infrequent — based on access patterns — to minimize cost when access patterns are unpredictable. Offers optional Archive Access tiers for very infrequent access.</p>
+          <p><strong>When to use:</strong> Unknown or changing access patterns, large datasets with varying usage.</p>
+          <p><strong>Notes:</strong> Small monitoring & automation fee applies; no retrieval fees when objects are in frequent tier; archival tiers have retrieval times/costs.</p>
+        </section>
+
+        <section id="standard-ia" class="card">
+          <h3>S3 Standard-Infrequent Access (Standard-IA)</h3>
+          <p>Lower storage cost than Standard with a per-GB retrieval fee and minimum object size charge (per 30 days). Data is stored across multiple AZs and still supports fast retrieval.</p>
+          <p><strong>When to use:</strong> Backups, disaster recovery, long-lived but infrequently accessed data where rapid access is occasionally required.</p>
+        </section>
+
+        <section id="onezone" class="card">
+          <h3>S3 One Zone-Infrequent Access (One Zone-IA)</h3>
+          <p>Lower-cost IA option that stores data in a single AZ. Suitable for re-creatable data or secondary backups where AZ-level resilience is acceptable to trade for cost.</p>
+          <p><strong>When to use:</strong> Secondary backups, replicated data stored elsewhere.</p>
+        </section>
+
+        <section id="glacier-instant" class="card">
+          <h3>S3 Glacier Instant Retrieval</h3>
+          <p>Archive storage with millisecond retrieval — ideal for data that is rarely accessed but requires immediate retrieval when requested (e.g., media archives served rarely).</p>
+          <p><strong>When to use:</strong> Long-term archives that occasionally need immediate access.</p>
+        </section>
+
+        <section id="glacier-flex" class="card">
+          <h3>S3 Glacier Flexible Retrieval</h3>
+          <p>Designed for long-term archival with retrieval options ranging from minutes to hours depending on the retrieval tier selected (Standard, Bulk, Expedited historically — AWS updates names occasionally).</p>
+          <p><strong>When to use:</strong> Compliance archives, backups where retrieval within hours is acceptable.</p>
+        </section>
+
+        <section id="glacier-deep" class="card">
+          <h3>S3 Glacier Deep Archive</h3>
+          <p>The lowest-cost storage class for data that is rarely accessed (e.g., legal archives, long-term retention). Typical retrieval times are hours (often 12 hours or more).</p>
+          <p><strong>When to use:</strong> Cold archives with multi-year retention and minimal retrieval.</p>
+        </section>
+
+        <section id="pricing" class="card">
+          <h3>Pricing patterns & trade-offs</h3>
+          <p>Storage classes differ by:</p>
+          <ul>
+            <li>Per-GB storage cost (lower for archive classes)</li>
+            <li>PUT/GET request costs</li>
+            <li>Data retrieval / restore costs (higher for infrequent and archive classes)</li>
+            <li>Minimum storage duration charges (e.g., 30 days for some IA classes, 90/180 days for glacier tiers)</li>
+          </ul>
+          <p>Always estimate total cost using your access frequency, object sizes, and expected retrievals. Use AWS Cost Explorer or S3 Storage Lens to analyze patterns.</p>
+        </section>
+
+        <section id="lifecycle" class="card">
+          <h3>Lifecycle policies — automate transitions</h3>
+          <p>Use S3 Lifecycle rules to automatically transition objects between storage classes based on age or other conditions. Example: move logs to Standard-IA after 30 days, to Glacier Flexible Retrieval after 365 days.</p>
+          <div class="code-title"><div class="small muted">Example lifecycle rule (JSON)</div><button class="copy" data-copy='{"Rules":[{"ID":"ArchiveLogs","Prefix":"logs/","Status":"Enabled","Transitions":[{"Days":30,"StorageClass":"STANDARD_IA"},{"Days":365,"StorageClass":"GLACIER_FLEXIBLE_RETRIEVAL"}],"Expiration":{"Days":3650}}]}'>Copy</button></div>
+          <pre><code>{
+  "Rules": [
+    {
+      "ID": "ArchiveLogs",
+      "Prefix": "logs/",
+      "Status": "Enabled",
+      "Transitions": [
+        { "Days": 30, "StorageClass": "STANDARD_IA" },
+        { "Days": 365, "StorageClass": "GLACIER_FLEXIBLE_RETRIEVAL" }
+      ],
+      "Expiration": { "Days": 3650 }
+    }
+  ]
+}</code></pre>
+        </section>
+
+        <section id="cli" class="card">
+          <h3>AWS CLI & SDK examples</h3>
+          <p>Upload an object with a storage class:</p>
+          <pre><code># upload using AWS CLI and set storage class to STANDARD_IA
+aws s3 cp bigfile.zip s3://my-bucket/bigfile.zip --storage-class STANDARD_IA</code></pre>
+          <p>Copy/transition objects (example):</p>
+          <pre><code># copy object to change storage class (server-side copy)
+aws s3api copy-object --bucket my-bucket --copy-source my-bucket/oldkey --key newkey --storage-class GLACIER_FLEXIBLE_RETRIEVAL</code></pre>
+          <p>Restore an archived Glacier object (request a restore):</p>
+          <pre><code># initiate restore (example)
+aws s3api restore-object --bucket my-bucket --key archived-object --restore-request Days=7,GlacierJobParameters={Tier=Standard}</code></pre>
+        </section>
+
+        <section id="bestpractices" class="card">
+          <h3>Best practices</h3>
+          <ul>
+            <li>Classify data by access pattern: hot, warm, cold.</li>
+            <li>Use lifecycle policies to automate transitions and expirations.</li>
+            <li>Monitor with S3 Storage Lens and CloudWatch metrics.</li>
+            <li>Consider <strong>Intelligent-Tiering</strong> for unpredictable workloads.</li>
+            <li>Encrypt sensitive data at rest (SSE-S3, SSE-KMS) and in transit (HTTPS).</li>
+            <li>Use replication (CRR/SRR) for cross-region resiliency if needed.</li>
+            <li>Factor in minimum retention and retrieval costs when choosing archive classes.</li>
+          </ul>
+        </section>
+
+        <section id="comparison" class="card">
+          <h3 id="compare">Quick Comparison Table</h3>
+          <pre><code>Class                      | Durability | Availability | Retrieval | Use-case
+---------------------------|------------|--------------|----------|-------------------------
+STANDARD                   | 11 9's     | High         | Instant  | Hot data, web apps
+INTELLIGENT_TIERING        | 11 9's     | High         | Instant  | Unknown access patterns
+STANDARD_IA                | 11 9's     | Lower than S | Instant  | Backups, infrequent
+ONEZONE_IA                 | 11 9's*    | AZ-only      | Instant  | Secondary backups
+GLACIER_INSTANT_RETRIEVAL  | 11 9's     | N/A          | Millis   | Archive with instant access
+GLACIER_FLEXIBLE_RETRIEVE  | 11 9's     | N/A          | Minutes-hrs | Compliance archives
+GLACIER_DEEP_ARCHIVE       | 11 9's     | N/A          | Hours    | Long-term cold storage</code></pre>
+        </section>
+
+        <section id="cost-scenarios" class="card">
+          <h3>Cost optimization scenarios</h3>
+          <p>Example: If you have 100 TB of log data where only 1% is accessed monthly, using Standard then transition to Standard-IA at 30 days and to Glacier after 365 days will save substantial storage cost. Always run numbers with AWS Pricing Calculator.</p>
+        </section>
+
+        <section id="faqs" class="card">
+          <h3>FAQs</h3>
+          <p><strong>Q:</strong> Can I change an object's storage class after upload?<br><strong>A:</strong> Yes — you can copy the object to itself with a new storage class or use lifecycle rules.</p>
+          <p><strong>Q:</strong> Do Glacier classes lose durability?<br><strong>A:</strong> No — all S3 classes offer the same 11 9's durability; differences are in availability, cost, and retrieval latency.</p>
+        </section>
+
+        <footer class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <strong>Ready to design your S3 strategy?</strong>
+            <p class="meta">Prototype with lifecycle rules and Intelligent-Tiering, monitor usage for 30–90 days, then finalize storage class transitions.</p>
+          </div>
+          <div style="text-align:right">
+            <button class="btn" onclick="downloadReadme()">Download Guide (README)</button>
+            <div style="margin-top:6px" class="badge">Version 1.0</div>
+          </div>
+        </footer>
+
+      </main>
+
+      <aside>
+        <div class="card">
+          <div class="meta">Quick commands</div>
+          <pre style="margin-top:8px;background:transparent;border:none;color:#cfe6e9"><code># Upload with storage class
+aws s3 cp file s3://bucket/key --storage-class STANDARD_IA
+
+# Apply lifecycle (aws s3api put-bucket-lifecycle-configuration)
+</code></pre>
+
+          <div style="margin-top:12px">
+            <div class="meta">Resources</div>
+            <ul>
+              <li><a href="https://aws.amazon.com/s3/storage-classes/" target="_blank">AWS S3 Storage Classes</a></li>
+              <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/StorageClasses.html" target="_blank">S3 User Guide — Storage Classes</a></li>
+            </ul>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="meta">Author</div>
+            <div style="margin-top:6px">Jayesh Saini • <a href="https://github.com/jayesh820" target="_blank">GitHub</a></div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+    <footer>
+      <div class="meta">© 2025 Jayesh — AWS S3 Storage Classes Guide</div>
+    </footer>
+  </div>
+
+  <script>
+    // copy buttons
+    document.querySelectorAll('.copy').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const txt = btn.get
