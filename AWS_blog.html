@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AWS Case Studies — Real-World Cloud Success Stories</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .hero { background: linear-gradient(90deg, rgba(30,64,175,0.06), rgba(99,102,241,0.03)); }
+    .card-shadow { box-shadow: 0 10px 30px rgba(2,6,23,0.06); }
+    .badge { background: linear-gradient(90deg,#7c3aed,#4f46e5); color:white; padding:0.25rem 0.6rem; border-radius:999px; font-weight:600; }
+    pre code { display:block; white-space:pre-wrap; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 leading-relaxed">
+  <header class="hero py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold">AWS Case Studies — <span class="text-indigo-600">Real-World Cloud Success Stories</span></h1>
+          <p class="mt-4 text-gray-600 max-w-3xl">Amazon Web Services (AWS) powers organizations of every size. Below is a curated, research-backed collection of notable AWS user cases that show how cloud strategies solve infrastructure bottlenecks, improve scalability, and accelerate innovation.</p>
+        </div>
+        <div class="mt-6 md:mt-0">
+          <nav class="flex space-x-3 text-sm">
+            <a href="#case-studies" class="px-4 py-2 bg-white rounded-lg card-shadow hover:shadow-md">Case Studies</a>
+            <a href="#summary" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">Summary</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 -mt-8 pb-16">
+    <section id="case-studies" class="grid gap-6 md:grid-cols-2">
+
+      <!-- template for each case study -->
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">1. Neiman Marcus — Accelerated App Launch with Serverless</h2>
+          <span class="badge">Serverless</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Launching a digital omnichannel app (“Connect”) originally slated for 4 months.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Leveraged serverless cloud-native architecture (Lambda, API Gateway, managed services).</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Reduced time-to-market by 50%, lowered costs, and enabled elastic scaling for smoother operations and increased associate productivity.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: AWS Documentation</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">2. Quickmail — 500% Growth in Daily Orders</h2>
+          <span class="badge">E-Commerce</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Outdated, paper-based workflows couldn't support spikes in demand.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Migrated core platform to AWS, implemented a serverless API-driven architecture with S3 and API Gateway.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Grew daily orders by 500%, doubling fulfillment volumes within a year.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: NextGen Group</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">3. Intuit — Cost Efficiency & Rapid Model Deployment</h2>
+          <span class="badge">FinTech / ML</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Seasonal spikes (TurboTax) made on-prem servers inefficient.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Migrated key applications to AWS, adopted SageMaker for ML workloads.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Reduced application costs by 6x, and sped up ML model training and deployment by 90%.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">4. Coca‑Cola — Marketing Spike Resilience</h2>
+          <span class="badge">Marketing Resilience</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Inability to handle massive traffic spikes during marketing campaigns.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Migrated web infrastructure to Elastic Beanstalk with Auto Scaling and automation.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Achieved ~40% operational savings and an ~80% reduction in helpdesk tickets through enhanced automation.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">5. Airbnb — Seamless Scalability for Traffic Spikes</h2>
+          <span class="badge">Platform Scale</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Frequent surges in user activity during holidays and events.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Used Elastic Beanstalk, Auto Scaling, ELB, and Amazon RDS for dynamic capacity.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Highly reliable, scalable service with no major outages even under intense load.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">6. Lyft — Real-Time Stream Processing</h2>
+          <span class="badge">Streaming / Real-time</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Processing high-volume real-time ride and location data.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Adopted Kinesis for streaming, Lambda for serverless logic, DynamoDB and S3 for storage.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Improved ride mapping, reduced latency, and streamlined infrastructure complexity.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">7. Domino’s — Predictive Ordering with ML</h2>
+          <span class="badge">ML / Retail</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Poor performance during high browsing loads on legacy systems.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Deployed EC2, S3, Glue, and SageMaker to build a predictive ordering engine (Project 3TEN).</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Delivered orders in ~10 minutes, significantly boosting customer satisfaction and delivery freshness.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: LinkedIn</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">8. Moderna — Rapid Vaccine R&D</h2>
+          <span class="badge">Healthcare / R&D</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Modeling and analyzing mRNA sequences quickly and at scale.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Utilized AWS Fargate, ML services, and Glue for data lake management.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Developed an mRNA vaccine sequence in ~2 days—advancing R&amp;D speed dramatically.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">9. BookMyShow — Unified Data & 70% Cost Savings</h2>
+          <span class="badge">Data & Analytics</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Disparate data sources causing inefficiencies and high costs.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Centralized 200 TB of data into an S3-backed data lake using Athena, Lake Formation, and SageMaker.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Reduced costs by ~70% and storage by 75%, while simplifying analytics at scale.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">10. NASA JPL — Mars Data Processing in the Cloud</h2>
+          <span class="badge">Aerospace / Satellite</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Processing live Mars Rover data reliably with limited ground infrastructure.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Used AWS Ground Station for direct cloud ingestion, Fargate and Lambda for processing, and SageMaker for AI analysis.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Enabled real-time, scalable satellite data processing without heavy reliance on physical ground infrastructure.</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Medium</p>
+      </article>
+
+      <article class="bg-white p-6 rounded-2xl card-shadow">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-semibold">11. Financial Institutions — AI & Modern Operations</h2>
+          <span class="badge">Finance / AI</span>
+        </div>
+        <p class="mt-3 text-gray-600"><strong>Challenge:</strong> Modernize operations, process large data volumes, and improve customer experiences with AI.</p>
+        <p class="mt-2 text-gray-600"><strong>AWS Strategy:</strong> Banks and financial firms use AWS AI toolsets (SageMaker, Bedrock) and scalable data platforms to deploy thousands of models and decision systems.</p>
+        <p class="mt-2 text-gray-600"><strong>Impact:</strong> Improved customer decisioning and analytics at scale (e.g., CBA: 2,000+ models analyzing 157B data points; supporting 55M decisions daily).</p>
+        <p class="mt-3 text-sm text-gray-400">Source: Business Insider, The Australian, Cinco Días</p>
+      </article>
+
+    </section>
+
+    <section id="summary" class="mt-8 bg-white p-8 rounded-2xl card-shadow">
+      <h3 class="text-2xl font-semibold">Summary: Why These Case Studies Matter</h3>
+      <p class="mt-3 text-gray-600">The case studies above highlight repeatable business benefits organizations realize when they move to modern cloud architectures on AWS.</p>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class="p-4 border rounded-lg">
+          <h4 class="font-semibold">Cost Efficiency</h4>
+          <p class="text-gray-600 mt-2">Significant TCO reduction (e.g., Intuit, Quickmail, BookMyShow).</p>
+        </div>
+        <div class="p-4 border rounded-lg">
+          <h4 class="font-semibold">Speed & Agility</h4>
+          <p class="text-gray-600 mt-2">Faster product launches and ML deployment (e.g., Neiman Marcus, Moderna).</p>
+        </div>
+        <div class="p-4 border rounded-lg">
+          <h4 class="font-semibold">Scalability & Resilience</h4>
+          <p class="text-gray-600 mt-2">Effortless response to spikes—Airbnb, Domino's, Coca‑Cola.</p>
+        </div>
+        <div class="p-4 border rounded-lg">
+          <h4 class="font-semibold">Innovation & AI</h4>
+          <p class="text-gray-600 mt-2">ML-driven enhancements (Lyft, Moderna, financial institutions).</p>
+        </div>
+        <div class="p-4 border rounded-lg">
+          <h4 class="font-semibold">Global Processing</h4>
+          <p class="text-gray-600 mt-2">Massive data pipelines handled seamlessly (NASA JPL, BookMyShow).</p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-between">
+        <div>
+          <a class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-500" href="#">Download as PDF</a>
+        </div>
+        <div class="text-sm text-gray-500">Want this exported or converted to a React blog template? I can do that next.</div>
+      </div>
+    </section>
+
+    <section id="sources" class="mt-8 text-sm text-gray-600">
+      <h4 class="font-semibold">Sources & Further Reading</h4>
+      <ul class="mt-3 list-disc list-inside">
+        <li>AWS Documentation and customer stories</li>
+        <li>NextGen Group case references</li>
+        <li>Medium articles and company posts</li>
+        <li>LinkedIn posts and industry reporting</li>
+        <li>Business Insider, The Australian, Cinco Días</li>
+      </ul>
+      <p class="mt-3 text-gray-400">(If you want exact source links inserted, I can add them into the "Sources" section.)</p>
+    </section>
+
+  </main>
+
+  <footer class="py-8 text-center text-gray-500 text-sm">
+    
+    © 2025 — AWS Case Studies Blog • Built for clarity
+  </footer>
+
+</body>
+</html>
